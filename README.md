@@ -26,6 +26,7 @@ Code unit test coverage is currently at 96.7% (for packages with code worth test
   - [Configuration](#configuration)
   - [Special Tags/Behavior](#special-tagsbehavior)
     - [Special Behavior](#special-behavior)
+      - [Route Prefix, and `index.html`](#route-prefix-and-indexhtml)
       - [Auto-refresh](#auto-refresh)
     - [Important Tags](#important-tags)
       - [`attributes` Tag (Required)](#attributes-tag-required)
@@ -59,11 +60,11 @@ make build # make gobuild, if using Go
 make run   # make gorun, if using Go
 ```
 
-Finally, navigate to `http://localhost:8099/content/index.html` to view `src/content/index.md` in its rendered form.
+Finally, navigate to `http://localhost:8099/index.html` to view `src/content/index.md` in its rendered form.
 
 > *Note: If you change the configured `listenAddr` in `config.yml`, or want to change the port mapping in the `docker run` command, please update the Makefile accordingly.
 
-To add new documents, ensure that the [`<attributes title="Hello World!"></attributes>`]((#attributes-tag-required) tag is placed preferably at the top of your Markdown document.
+To add new documents, ensure that the [`<attributes title="Hello World!"></attributes>`](#attributes-tag-required) tag is placed preferably at the top of your Markdown document.
 
 ## Configuration
 
@@ -74,6 +75,10 @@ Edit `config.yml` to meet your needs.
 There are a few custom HTML tags that are processed by the Light Sites rendering engine.
 
 ### Special Behavior
+
+#### Route Prefix, and `index.html`
+
+If navigating to the root URL, i.e. `http://localhost:8099/`, Light Sites will act as if the user navigated to `http://localhost:8099/index.html` (the `.html` suffix will change depending on `config.yml`). If, in `config.yml`, `routing.routePrefix` is set to `/content/`, for example, then navigating to `http://localhost:8099/content/` will yield the same result, but `http://localhost:8099/` will yield `404`.
 
 #### Auto-refresh
 
@@ -95,7 +100,7 @@ The `<attributes>` tag must be placed in the first line of the document. Current
 
 #### `directory` Tag
 
-Use the `<directory>` tag to render links to all documents in the `src/content` directory as a `<ul><li>...</li></ul>` tree. To hide a document, prefix it with a `.`, such as `src/content/.page2.md`. To visit a hidden page, visit `http://localhost:8099/content/.page2.html`. Traversing folders is supported. *This behavior may change in the future.*
+Use the `<directory>` tag to render links to all documents in the `src/content` directory as a `<ul><li>...</li></ul>` tree. To hide a document, prefix it with a `.`, such as `src/content/.page2.md`. To visit a hidden page, visit `http://localhost:8099/.page2.html`. Traversing folders is supported. *This behavior may change in the future.*
 
 To avoid issues and ensure smoothest functionality, ensure that your `config.yml` specifies `directories.documents` as `src/content` for example, and NOT as `./src/content`.
 

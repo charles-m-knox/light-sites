@@ -24,6 +24,10 @@ func ContentHandler(w http.ResponseWriter, req *http.Request, documents *[]docum
 
 	documentName := strings.TrimPrefix(req.URL.Path, fmt.Sprintf("%v", conf.Routing.RoutePrefix))
 
+	if documentName == "" {
+		documentName = fmt.Sprintf("index%v", conf.Routing.UrlFileSuffix)
+	}
+
 	for _, document := range *documents {
 		if fmt.Sprintf("%v%v", document.DocumentName, conf.Routing.UrlFileSuffix) == documentName {
 			w.Header().Set("Content-Type", "text/html")

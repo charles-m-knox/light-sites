@@ -8,9 +8,9 @@ directories:
   templates: "./src/templates"
 
 routing:
-  routePrefix: "/content/" # all documents are accessible under /content/doc.html
+  routePrefix: "/" # all documents are accessible under the format ${routePrefix}doc.html - make sure to include trailing slash!
   assetsPrefix: "/assets/" # all assets docs are accessible under /assets/bootstrap.min.css
-  urlFileSuffix: ".html" # the suffix to use when navigating to URLs, such as /content/doc.html
+  urlFileSuffix: ".html" # the suffix to use when navigating to URLs, such as /doc.html
 
 # CSS imports are relative to the routing.assetsPrefix directory
 cssImports:

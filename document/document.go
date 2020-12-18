@@ -215,7 +215,7 @@ func (document *Document) ProcessDirectoryNode(n *html.Node) error {
 			Type: html.ElementNode,
 			Data: "a",
 			Attr: []html.Attribute{
-				{Key: constants.HrefAttribute, Val: fmt.Sprintf("%v%v%v", constants.ContentPrefixURL, doc, document.Config.Routing.UrlFileSuffix)},
+				{Key: constants.HrefAttribute, Val: fmt.Sprintf("%v%v%v", document.Config.Routing.RoutePrefix, doc, document.Config.Routing.UrlFileSuffix)},
 				{Key: constants.RelAttribute, Val: constants.RelValue},
 			},
 		}
