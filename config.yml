@@ -1,0 +1,38 @@
+---
+
+refreshInterval: "30m"
+
+directories:
+  assets: "./src/assets"
+  documents: "src/content" # do not use leading "./"
+  templates: "./src/templates"
+
+routing:
+  routePrefix: "/content/" # all documents are accessible under /content/doc.html
+  assetsPrefix: "/assets/" # all assets docs are accessible under /assets/bootstrap.min.css
+  urlFileSuffix: ".html" # the suffix to use when navigating to URLs, such as /content/doc.html
+
+# CSS imports are relative to the routing.assetsPrefix directory
+cssImports:
+  - "bootstrap.min.css"
+  - "custom.css"
+
+# dictates the behavior of the HTML elements that will surround the body
+# tag
+bodyConfig:
+  containerClass: "container"
+  rowClass: "row"
+  colClass: "col-lg-12"
+
+# generic rules to apply to all elements. Note that any HTML attribute
+# can be specified here. See the commented-out <span> example.
+rules:
+  table:
+    class: "table table-bordered table-striped table-hover table-sm"
+  img:
+    style: "max-width: 100%;"
+  # span:
+    # aria-role: "contentinfo"
+    # class: "text-muted"
+
+listenAddr: ":8099"
