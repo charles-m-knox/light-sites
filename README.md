@@ -130,7 +130,7 @@ The following tags are all handled by the Light Sites engine, and do not require
 
 #### `title` Tag
 
-The `<title>Page Title</title>` tag should be set by you in your documents. Currently, it is not controlled by Light Sites.
+The `<title>Page Title</title>` tag is created automatically and inserted into the `<head>` node. Its value is equivalent to whatever you specify for [`<attributes title="xyz">`](#attributes-tag-required).
 
 #### `body` Tag
 

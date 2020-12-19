@@ -165,6 +165,24 @@ func (document *Document) ProcessHeadNode(n *html.Node) error {
 			},
 		})
 	}
+
+	// clean up an extra title node that the markdown processor creates
+	extraTitleNode := helpers.GetNodeOfType(n, constants.TitleNode)
+	if extraTitleNode != nil {
+		n.RemoveChild(extraTitleNode)
+	}
+
+	// the title has to be assigned as well
+	titleNode := &html.Node{
+		Type: html.ElementNode,
+		Data: constants.TitleNode,
+	}
+	titleNode.AppendChild(&html.Node{
+		Type: html.TextNode,
+		Data: document.Attributes[constants.TitleAttribute],
+	})
+	n.AppendChild(titleNode)
+
 	return nil
 }
 

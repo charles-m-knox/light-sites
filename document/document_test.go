@@ -334,7 +334,9 @@ func TestProcessHeadNode(t *testing.T) {
 	require := require.New(t)
 
 	defaultConfig := config.GetDefaultConfig()
-	defaultDocument := Document{Config: &defaultConfig}
+	docScenario1 := Document{Config: &defaultConfig, Attributes: map[string]string{constants.TitleAttribute: "Test 1"}}
+	docScenario2 := Document{Config: &defaultConfig, Attributes: map[string]string{constants.TitleAttribute: "Test 2"}}
+	docScenario3 := Document{Config: &defaultConfig, Attributes: map[string]string{constants.TitleAttribute: "Test 3"}}
 
 	tests := []struct {
 		TestName      string
@@ -344,21 +346,21 @@ func TestProcessHeadNode(t *testing.T) {
 	}{
 		{
 			"ProcessHeadNode scenario 1 - no children in body",
-			&defaultDocument,
+			&docScenario1,
 			`<head></head>`,
-			`<html><head><link href="/assets/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous"/><link href="/assets/custom.css" rel="stylesheet" crossorigin="anonymous"/></head><body></body></html>`,
+			`<html><head><link href="/assets/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous"/><link href="/assets/custom.css" rel="stylesheet" crossorigin="anonymous"/><title>Test 1</title></head><body></body></html>`,
 		},
 		{
-			"ProcessHeadNode scenario 2 - one child in body",
-			&defaultDocument,
+			"ProcessHeadNode scenario 2 - one child in body that gets removed since it's a title",
+			&docScenario2,
 			`<head><title>Test</title></head>`,
-			`<html><head><title>Test</title><link href="/assets/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous"/><link href="/assets/custom.css" rel="stylesheet" crossorigin="anonymous"/></head><body></body></html>`,
+			`<html><head><link href="/assets/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous"/><link href="/assets/custom.css" rel="stylesheet" crossorigin="anonymous"/><title>Test 2</title></head><body></body></html>`,
 		},
 		{
-			"ProcessHeadNode scenario 3 - multiple children",
-			&defaultDocument,
+			"ProcessHeadNode scenario 3 - multiple children, including extra unneeded title node",
+			&docScenario3,
 			`<head><title>Test</title><link href="/assets/test.css" rel="stylesheet"/></head>`,
-			`<html><head><title>Test</title><link href="/assets/test.css" rel="stylesheet"/><link href="/assets/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous"/><link href="/assets/custom.css" rel="stylesheet" crossorigin="anonymous"/></head><body></body></html>`,
+			`<html><head><link href="/assets/test.css" rel="stylesheet"/><link href="/assets/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous"/><link href="/assets/custom.css" rel="stylesheet" crossorigin="anonymous"/><title>Test 3</title></head><body></body></html>`,
 		},
 	}
 
@@ -555,7 +557,7 @@ func TestProcessHTMLTree(t *testing.T) {
 			"ProcessHTMLTree scenario happy path",
 			&defaultDocument,
 			`<html><head></head><body><attributes title="Your Document Title"></attributes><template file="alert.html" heading="false" alert-text="Heads up!"></template><table><tr><th></th></tr><tr><td></td></tr></table><img src="test.jpg"/><directory></directory></body></html>`,
-			`<html><head><link href="/assets/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous"/><link href="/assets/custom.css" rel="stylesheet" crossorigin="anonymous"/></head><body><div class="container"><div class="row"><div class="col-lg-12"><div class="alert alert-primary">Heads up!</div><table><tbody><tr><th></th></tr><tr><td></td></tr></tbody></table><img src="test.jpg" style="max-width: 100%;"/><ul><li><a href="/content/test1.html" rel="noopener noreferrer">test1</a></li><li><a href="/content/test2.html" rel="noopener noreferrer">test2</a></li></ul></div></div></div></body></html>`,
+			`<html><head><link href="/assets/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous"/><link href="/assets/custom.css" rel="stylesheet" crossorigin="anonymous"/><title>Your Document Title</title></head><body><div class="container"><div class="row"><div class="col-lg-12"><div class="alert alert-primary">Heads up!</div><table><tbody><tr><th></th></tr><tr><td></td></tr></tbody></table><img src="test.jpg" style="max-width: 100%;"/><ul><li><a href="/content/test1.html" rel="noopener noreferrer">test1</a></li><li><a href="/content/test2.html" rel="noopener noreferrer">test2</a></li></ul></div></div></div></body></html>`,
 			false,
 		},
 		{
@@ -669,11 +671,12 @@ func TestParseDocument(t *testing.T) {
 			&documents,
 			&documentDirectory,
 			"test1",
-			`<!DOCTYPE html><html><head>
-  <title></title>
+			// this next line is clunky because we remove the empty <title>
+			// node from the tree, but useless whitespace remains
+			`<!DOCTYPE html><html><head>` + "\n  " + `
   <meta name="GENERATOR" content="github.com/gomarkdown/markdown markdown processor for Go"/>
   <meta charset="utf-8"/>
-<link href="/assets/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous"/><link href="/assets/custom.css" rel="stylesheet" crossorigin="anonymous"/></head>
+<link href="/assets/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous"/><link href="/assets/custom.css" rel="stylesheet" crossorigin="anonymous"/><title>Test Document</title></head>
 <body><div class="container"><div class="row"><div class="col-lg-12">
 
 <p></p>
