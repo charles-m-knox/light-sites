@@ -1,6 +1,18 @@
 # Light Sites
 
-Light Sites is a Go-powered, no-JavaScript, template-friendly, lightweight static markdown parser and server. It aims to combine Bootstrap CSS (and other customizable CSS if you choose) with Markdown with minimal configuration.
+Light Sites is a Go-powered, no-JavaScript, template-friendly, lightweight  markdown parser and server. It aims to combine Bootstrap CSS (and other customizable CSS if you choose) with Markdown with minimal configuration.
+
+## A word of warning
+
+This was written as a coding project. I wanted to create a minimalistic server to parse markdown files and manipulate them according to some essential customizations. It's more of reference code than an actual production-ready solution. For the purposes of a proper website deployment, I recommend [Hugo](https://gohugo.io).
+
+If this project ever receives updates in the future, it would be because people asked for it and are using it, or because I feel like tinkering with it again.
+
+Static website generators are preferred over a live API. I did not architect this program to statically generate content, but I should have. Instead, it acts as a live web server that will require CPU cycles on whatever system you're running.
+
+I also plan to update this with screenshots and examples at some point soon too.
+
+## About
 
 Light Sites was created to bring together a few different niches into a single package:
 
@@ -20,6 +32,8 @@ Code unit test coverage is currently at 96.7% (for packages with code worth test
 ## Table of Contents
 
 - [Light Sites](#light-sites)
+  - [A word of warning](#a-word-of-warning)
+  - [About](#about)
   - [Table of Contents](#table-of-contents)
   - [Usage](#usage)
   - [Deployment](#deployment)
